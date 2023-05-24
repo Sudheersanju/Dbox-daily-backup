@@ -124,7 +124,7 @@ resource "null_resource" "export-pem" {
     EOT
     working_dir = "./"
   }
-  depends_on = [aws_instance.mongo-0]
+  depends_on = [aws_instance.bastion-host]
 }
 
 resource "null_resource" "install-mongo-0" {
