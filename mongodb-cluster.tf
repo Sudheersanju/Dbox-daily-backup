@@ -52,7 +52,7 @@ resource "null_resource" "copy" {
   provisioner "local-exec" {
   command = <<-EOT
     echo "${tls_private_key.pem-key.private_key_pem}" > database-key.pem
-    chmod 400 main-key-1.pem
+    chmod 400 database-key.pem
   EOT
  }
   depends_on = [aws_key_pair.database_key_pair]
@@ -120,7 +120,7 @@ resource "aws_instance" "mongo-2" {
 resource "null_resource" "export-pem" {
   provisioner "local-exec" {
     command = <<-EOT
-      scp -o "StrictHostKeyChecking=no" -i "main-key-1.pem" "main-key-1.pem" ubuntu@${aws_instance.bastion-host.public_ip}:~
+      scp -o "StrictHostKeyChecking=no" -i "database-key.pem" "database-key.pem" ubuntu@${aws_instance.bastion-host.public_ip}:~
     EOT
     working_dir = "./"
   }
